@@ -1,4 +1,4 @@
-package com.laker.xlibrary;
+package com.laker.xlibrary.ui.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.laker.xlibrary.R;
 import com.laker.xlibrary.app.AppConstant;
 import com.laker.xlibrary.base.BaseActivity;
 import com.laker.xlibrary.model.TabEntity;
