@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -18,10 +16,10 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.laker.xlibrary.app.AppConstant;
 import com.laker.xlibrary.base.BaseActivity;
 import com.laker.xlibrary.model.TabEntity;
-import com.laker.xlibrary.ui.fragment.fragment.MainFragment4;
-import com.laker.xlibrary.ui.fragment.fragment.MainFragment1;
-import com.laker.xlibrary.ui.fragment.fragment.MainFragment2;
-import com.laker.xlibrary.ui.fragment.fragment.MainFragment3;
+import com.laker.xlibrary.ui.fragment.MainFragment4;
+import com.laker.xlibrary.ui.fragment.MainFragment1;
+import com.laker.xlibrary.ui.fragment.MainFragment2;
+import com.laker.xlibrary.ui.fragment.MainFragment3;
 
 import java.util.ArrayList;
 

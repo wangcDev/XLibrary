@@ -1,4 +1,4 @@
-package com.laker.xlibrary.loder;
+package com.laker.xlibrary.loader;
 
 import android.content.Context;
 import android.widget.ImageView;

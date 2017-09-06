@@ -1,7 +1,6 @@
-package com.laker.xlibrary.ui.fragment.fragment;
+package com.laker.xlibrary.ui.fragment;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.laker.xlibrary.R;
@@ -9,23 +8,19 @@ import com.laker.xlibrary.base.BaseFragment;
 
 import butterknife.Bind;
 
-/**
- * des:关注主页
- * Created by xsf
- * on 2016.09.17:07
- */
-public class MainFragment4 extends BaseFragment {
+
+public class MainFragment2 extends BaseFragment {
     @Bind(R.id.tv_content)
     TextView tv_content;
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_4;
+        return R.layout.fragment_2;
     }
 
     @Override
     public void initData(Bundle savedInstanceState) {
-        tv_content.setText("this is fragment 4 ");
+        tv_content.setText("this is fragment 2");
     }
 
     @Override

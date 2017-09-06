@@ -1,4 +1,4 @@
-package com.laker.xlibrary.ui.fragment.fragment;
+package com.laker.xlibrary.ui.fragment;
 
 import android.os.Bundle;
 import android.widget.TextView;
