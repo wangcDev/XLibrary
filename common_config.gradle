@@ -1,0 +1,47 @@
+ext {
+    todayOutput = getRootProject().getRootDir().toString() + '/output/' + new Date().format('yyyyMMdd')
+    KEYSTORE_PATH = getRootProject().getRootDir().toString() + '/' + 'default.keystore'
+    KEY_ALIAS = "demo"
+    STORE_PASSWORD = 123456
+    KEY_PASSWORD = 111111
+    android = [
+            compileSdkVersion: 23,
+            buildToolsVersion: "23.0.2",
+            applicationId    : "com.laker.lakerdemo",
+            minSdkVersion    : 15,
+            targetSdkVersion : 23,
+            outPutApkName    : "LakerDemo",
+            versionCode      : 1,
+            versionName      : "1.0"
+
+    ]
+    dependencies = [
+            "appcompat-v7"                 : "com.android.support:appcompat-v7:23.4.0",
+            "design"                       : "com.android.support:design:23.2.1",
+            "cardview-v7"                  : "com.android.support:cardview-v7:23.2.1",
+            "jlog"                         : "com.jiongbull:jlog:1.0.5",
+            "jLog"                         : 'com.github.JiongBull:jlog:0.1.0',
+            "gson"                         : "com.google.code.gson:gson:2.4",
+            "okhttp"                       : "com.squareup.okhttp3:okhttp:3.2.0",
+            "retrofit"                     : "com.squareup.retrofit2:retrofit:2.0.0",
+            "converter-gson"               : "com.squareup.retrofit2:converter-gson:2.0.0",
+            "adapter-rxjava"               : "com.squareup.retrofit2:adapter-rxjava:2.0.0",
+            "glide"                        : "com.github.bumptech.glide:glide:3.7.0",
+            "butterknife"                  : "com.jakewharton:butterknife:7.0.1",
+            "rxjava"                       : "io.reactivex.rxjava2:rxjava:2.0.1",
+            "rxandroid"                    : "io.reactivex.rxjava2:rxandroid:2.0.1",
+            "rxbinding"                    : "com.jakewharton.rxbinding:rxbinding:0.4.0",
+            "base-adapter"                 : "com.zhy:base-adapter:2.0.0",
+            "logging-interceptor"          : "com.squareup.okhttp3:logging-interceptor:3.2.0",
+            "multidex"                     : "com.android.support:multidex:1.0.1",
+            "eventbus-annotation-processor": "org.greenrobot:eventbus-annotation-processor:3.0.1",
+            "eventbus"                     : "org.greenrobot:eventbus:3.0.0",
+            "bugly_crashreport"            : "com.tencent.bugly:crashreport:latest.release",
+            "bugly_nativecrashreport"      : "com.tencent.bugly:nativecrashreport:latest.release",
+            "umeng_analytics"              : "com.umeng.analytics:analytics:latest.integration",
+            "timber"                       : "com.jakewharton.timber:timber:4.5.1",
+            "recyclerview"                 : "com.android.support:recyclerview-v7:23.2.0",
+            "RxPermissions"                : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.3@aar",
+    ]
+
+}
