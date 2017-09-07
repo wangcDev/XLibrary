@@ -9,7 +9,7 @@ import android.view.Window;
 
 import com.laker.xlibrary.R;
 import com.laker.xlibs.base.XActivity;
-import com.laker.xlibs.widget.StatusBarCompat;
+import com.laker.xlibs.utils.statusbar.XStatusBar;
 
 import butterknife.ButterKnife;
 
@@ -22,13 +22,11 @@ public abstract class BaseActivity extends XActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         doBeforeSetContentView();
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         mContext = this;
-        initView();
-        initData(savedInstanceState);
+        super.onCreate(savedInstanceState);
     }
 
     /**
@@ -56,21 +54,8 @@ public abstract class BaseActivity extends XActivity {
      * 着色状态栏（4.4以上系统有效）
      */
     public void setStatusBarColor(int color){
-        StatusBarCompat.setStatusBarColor(this, ContextCompat.getColor(this,color));
+        XStatusBar.setColor(this, ContextCompat.getColor(this,color));
     }
-//    /**
-//     * 着色状态栏（4.4以上系统有效）
-//     */
-//    public void setStatusBarColor(int color){
-//        StatusBarCompat.setStatusBarColor(this,color);
-//    }
-    /**
-     * 沉浸状态栏（4.4以上系统有效）
-     */
-    public void setTranslanteBar(){
-        StatusBarCompat.translucentStatusBar(this);
-    }
-
 
 
     /**

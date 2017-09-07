@@ -14,6 +14,8 @@ public abstract class XActivity extends AppCompatActivity implements ICallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         XActivityStack.getInstance().addActivity(this);
+        initView();
+        initData(savedInstanceState);
     }
 
     /**

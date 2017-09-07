@@ -4,4 +4,6 @@ include ':libs:xLibsCustom'
 include ':libs:FlycoTabLayout_Lib'
 include ':libs:okgo'
 include ':libs:okserver'
+include ':libs:banner'
+include ':libs:gridviewpager'
 

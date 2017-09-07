@@ -22,8 +22,6 @@ public abstract class BaseFragment extends XFragment {
         if (rootView == null)
             rootView = inflater.inflate(getLayoutId(), container, false);
         ButterKnife.bind(this, rootView);
-        initData(savedInstanceState);
-        initView();
         return rootView;
     }
 

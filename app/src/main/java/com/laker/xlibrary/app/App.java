@@ -22,6 +22,7 @@ public class App extends XApplication {
          * GlideImageLoader为你的图片加载框架实现类
          */
         XFrame.initXImageLoader(new GlideImageLoader(getApplicationContext()));
+        XFrame.initXLoadingView();
     }
 
     public static Context getAppContext() {
