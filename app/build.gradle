@@ -34,6 +34,7 @@ dependencies {
     compile project(':libs:FlycoTabLayout_Lib')
     compile project(':libs:banner')
     compile project(':libs:gridviewpager')
+    compile project(':libs:pay')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.8.0'

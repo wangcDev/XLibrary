@@ -143,7 +143,6 @@ public class XLoadingView extends FrameLayout {
         }
         View view = getChildAt(0);
         setContentView(view);
-        showLoading();
     }
     /**
      * 设置重试点击事件

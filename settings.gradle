@@ -6,4 +6,5 @@ include ':libs:okgo'
 include ':libs:okserver'
 include ':libs:banner'
 include ':libs:gridviewpager'
+include ':libs:pay'
 

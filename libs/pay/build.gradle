@@ -1,0 +1,80 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+    //如果你开源库中有中文注释在moudel的build.gradle加入格式,加上这些
+    tasks.withType(Javadoc) {
+        options{ encoding "UTF-8"
+            charSet 'UTF-8'
+            links "http://docs.oracle.com/javase/7/docs/api"
+        }
+    }
+}
+android {
+    compileSdkVersion 23
+    buildToolsVersion '25.0.0'
+
+    lintOptions {
+        abortOnError false
+    }
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+apply plugin: 'maven'
+
+def isReleaseBuild() {
+    return VERSION_NAME.contains("SNAPSHOT") == false
+}
+
+def getRepositoryUsername() {
+    return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+    return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
+}
+//gradlew clean build bintrayUpload  -PbintrayUser=wangchengdev  -PbintrayKey=xxxxxxxxxxxxxxxxxxxxxxx  -PdryRun=false
+//use:compile 'com.acjt.pay:pay:1.0.0'
+//publish {
+//    userOrg = 'acjt'//组织名称
+////    groupId = 'com.walker'
+////    artifactId = 'payUtils'
+//    groupId = 'com.acjt.pay'
+//    artifactId = 'pay'
+//    publishVersion = '1.0.1'
+//    desc = 'wechat and alipay '
+//    website = 'https://github.com/tsy12321/PayAndroid'
+//}
+uploadArchives {
+    repositories.mavenDeployer {
+//        repository(url:SNAPSHOT_REPOSITORY_URL)
+//        repository(url:LOCAL_REPO_URL)
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+        repository(url: RELEASE_REPOSITORY_URL) {
+            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+        snapshotRepository(url: SNAPSHOT_REPOSITORY_URL) {
+            authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+    }
+}

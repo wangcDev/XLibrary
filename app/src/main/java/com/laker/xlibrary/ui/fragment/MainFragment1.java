@@ -9,11 +9,17 @@ import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kerchin.widget.GridItemClickListener;
+import com.kerchin.widget.GridItemLongClickListener;
+import com.kerchin.widget.GridViewPager;
+import com.kerchin.widget.Model;
 import com.laker.xlibrary.R;
 import com.laker.xlibrary.base.BaseFragment;
 import com.laker.xlibrary.loader.GlideImageLoaderForBanner;
@@ -50,6 +56,8 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     XLoadingView xLoadingView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.mGridViewPager)
+    GridViewPager mGridViewPager;
 
     String[] paths = {
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
@@ -58,7 +66,9 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg",
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic2e7vsaj30ci08cglz.jpg",
     };
-
+    private String[] titles = {"美食", "电影", "酒店住宿", "休闲娱乐", "外卖", "自助餐", "KTV", "机票/火车票", "周边游", "美甲美睫",
+            "火锅", "生日蛋糕", "甜品饮品", "水上乐园", "汽车服务", "美发", "丽人", "景点", "足疗按摩", "运动健身", "健身", "超市", "买菜",
+            "今日新单", "小吃快餐", "面膜", "洗浴/汗蒸", "母婴亲子", "生活服务", "婚纱摄影", "学习培训", "家装", "结婚", "全部分配"};
     List adList = new ArrayList();
     List<String> adList2 = new ArrayList();
 
@@ -101,6 +111,24 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
         });
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
+
+        mGridViewPager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, XFrame.screenHeight / 4));
+        mGridViewPager
+                .setNumColumns(5)
+                .setNumRows(2)
+                .setGridItemClickListener(new GridItemClickListener() {
+                    @Override
+                    public void click(int pos, int position, String str) {
+                        XToast.normal("click"+pos + "/" + str);
+                    }
+                })
+                .setGridItemLongClickListener(new GridItemLongClickListener() {
+                    @Override
+                    public void click(int pos, int position, String str) {
+                        XToast.normal("longClick"+pos + "/" + str);
+                    }
+                })
+                .init(initGridPagerData());
     }
 
     @Override
@@ -108,7 +136,18 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
 
     }
 
-
+    /**
+     * 初始化数据源
+     */
+    private List<Model> initGridPagerData() {
+        List<Model> mData = new ArrayList<>();
+        for (int i = 0; i < titles.length; i++) {
+            //动态获取资源ID，第一个参数是资源名，第二个参数是资源类型例如drawable，string等，第三个参数包名
+            int imageId = getResources().getIdentifier("ic_category_" + i, "mipmap", getActivity().getPackageName());
+            mData.add(new Model(titles[i], imageId));
+        }
+        return mData;
+    }
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);

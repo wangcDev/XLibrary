@@ -37,7 +37,9 @@ public class GridViewPager extends RelativeLayout {
     /**
      * 每一页显示的个数 可设置
      */
-    private int pageSize = 10;
+//    private int pageSize = 10;
+    private int rows = 2;
+    private int columns = 5;
 
     /**
      * 当前显示的是第几页
@@ -78,20 +80,21 @@ public class GridViewPager extends RelativeLayout {
     public GridViewPager init(List<Model> list) {
         mData = list;
         //总的页数=总数/每页数量，并取整
-        pageCount = (int) Math.ceil(mData.size() * 1.0 / pageSize);
+        pageCount = (int) Math.ceil(mData.size() * 1.0 / getPageSize());
         mPagerList = new ArrayList<GridView>();
 
         for (int i = 0; i < pageCount; i++) {
             //每个页面都是inflate出一个新实例
             GridView gridView = (GridView) inflater.inflate(R.layout.gridview, mPager, false);
-            gridView.setAdapter(new GridViewAdapter(mContext, mData, i, pageSize));
+            gridView.setNumColumns(this.columns);
+            gridView.setAdapter(new GridViewAdapter(mContext, mData, i, getPageSize()));
             mPagerList.add(gridView);
 
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                     if (gridItemClickListener == null) return;
-                    int position = pos + curIndex * pageSize;
+                    int position = pos + curIndex * getPageSize();
                     gridItemClickListener.click(pos, position, mData.get(position).getName());
                 }
             });
@@ -101,7 +104,7 @@ public class GridViewPager extends RelativeLayout {
                 public boolean onItemLongClick(AdapterView<?> parent, View view, int pos, long id) {
                     if (gridItemLongClickListener == null) return false;
                     else {
-                        int position = pos + curIndex * pageSize;
+                        int position = pos + curIndex * getPageSize();
                         gridItemLongClickListener.click(pos, position, mData.get(position).getName());
                         return true;
                     }
@@ -187,11 +190,17 @@ public class GridViewPager extends RelativeLayout {
     }
 
     public int getPageSize() {
-        return pageSize;
+        return this.rows * this.columns;
     }
 
-    public GridViewPager setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+
+    public GridViewPager setNumRows(int rows) {
+        this.rows = rows;
+        return this;
+    }
+
+    public GridViewPager setNumColumns(int columns) {
+        this.columns = columns;
         return this;
     }
 
