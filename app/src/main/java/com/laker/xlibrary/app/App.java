@@ -37,6 +37,7 @@ public class App extends XApplication {
          */
         XFrame.initXImageLoader(new GlideImageLoader(getApplicationContext()));
         XFrame.initXLoadingView();
+        XFrame.initXLog();
         initOkGo();
     }
 

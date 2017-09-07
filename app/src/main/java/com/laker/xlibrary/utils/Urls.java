@@ -38,4 +38,6 @@ public class Urls {
     public static final String URL_REDIRECT = SERVER + "redirect";
 
     public static final String URL_GANK_BASE = "http://gank.io/api/data/";
+    public static final String TEST_URL = "http://wthrcdn.etouch.cn/weather_mini?citykey=101010100";
+
 }

@@ -22,14 +22,20 @@ import com.kerchin.widget.GridViewPager;
 import com.kerchin.widget.Model;
 import com.laker.xlibrary.R;
 import com.laker.xlibrary.base.BaseFragment;
+import com.laker.xlibrary.callback.DialogCallback;
 import com.laker.xlibrary.loader.GlideImageLoaderForBanner;
+import com.laker.xlibrary.model.Weather;
+import com.laker.xlibrary.utils.Urls;
 import com.laker.xlibs.XFrame;
 import com.laker.xlibs.adapter.XRecyclerViewAdapter;
 import com.laker.xlibs.adapter.XViewHolder;
 import com.laker.xlibs.adapter.decoration.DividerDecoration;
+import com.laker.xlibs.utils.log.XLog;
 import com.laker.xlibs.utils.permission.XPermission;
 import com.laker.xlibs.widget.XToast;
 import com.laker.xlibs.widget.loadingview.XLoadingView;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.model.Response;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
 
@@ -80,7 +86,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     @Override
     public void initData(Bundle savedInstanceState) {
         tv_content.setText("this is fragment 1 ");
-        for (int i = 0; i <paths.length; i++) {
+        for (int i = 0; i < paths.length; i++) {
             adList.add(paths[i]);
             adList2.add(paths[i]);
             adList2.add(paths[i]);
@@ -119,16 +125,17 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
                 .setGridItemClickListener(new GridItemClickListener() {
                     @Override
                     public void click(int pos, int position, String str) {
-                        XToast.normal("click"+pos + "/" + str);
+                        XToast.normal("click" + pos + "/" + str);
                     }
                 })
                 .setGridItemLongClickListener(new GridItemLongClickListener() {
                     @Override
                     public void click(int pos, int position, String str) {
-                        XToast.normal("longClick"+pos + "/" + str);
+                        XToast.normal("longClick" + pos + "/" + str);
                     }
                 })
                 .init(initGridPagerData());
+
     }
 
     @Override
@@ -148,6 +155,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
         }
         return mData;
     }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -161,7 +169,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     }
 
     @OnClick({R.id.action_network_error, R.id.action_loading, R.id.action_error, R.id.action_content, R.id.action_empty,
-            R.id.btn_call,R.id.btn_camera,R.id.btn_all})
+            R.id.btn_call, R.id.btn_camera, R.id.btn_all,R.id.btn_request})
     public void click(TextView button) {
         switch (button.getId()) {
             case R.id.action_network_error:
@@ -169,6 +177,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
                 break;
             case R.id.action_loading:
                 xLoadingView.showLoading();
+
                 break;
             case R.id.action_error:
                 xLoadingView.showEmpty();
@@ -187,6 +196,15 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
                 break;
             case R.id.btn_all:
                 sendPermission();
+                break;
+            case R.id.btn_request:
+                OkGo.<Weather>get(Urls.TEST_URL).execute(new DialogCallback<Weather>(getActivity()) {
+                    @Override
+                    public void onSuccess(Response<Weather> response) {
+                        XToast.normal("onSuccess response.code="+response.code());
+                        XLog.i(" response = " + response.body().toString());
+                    }
+                });
                 break;
             default:
                 break;
@@ -208,7 +226,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
      * 拨打电话
      */
     private void doCallPhone() {
-        XPermission.requestPermissions(getActivity(), 100,new String[]{Manifest.permission.CALL_PHONE}, new XPermission.OnPermissionListener() {
+        XPermission.requestPermissions(getActivity(), 100, new String[]{Manifest.permission.CALL_PHONE}, new XPermission.OnPermissionListener() {
             //权限申请成功时调用
             @Override
             public void onPermissionGranted() {
@@ -217,6 +235,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
                 intent.setData(Uri.parse("tel:18782938042"));
                 startActivity(intent);
             }
+
             //权限被用户禁止时调用
             @Override
             public void onPermissionDenied() {
@@ -245,6 +264,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
             }
         });
     }
+
     /**
      * 多个权限
      */

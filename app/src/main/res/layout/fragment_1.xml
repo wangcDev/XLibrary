@@ -105,6 +105,14 @@
             android:text="多个权限请求" />
 
     </LinearLayout>
+    <Button
+        android:id="@+id/btn_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/button2"
+        android:layout_toRightOf="@+id/button2"
+        android:text="发起网络请求" />
 
     <com.laker.xlibs.widget.loadingview.XLoadingView
         android:id="@+id/xLoadingView"
