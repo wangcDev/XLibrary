@@ -1,4 +1,4 @@
-package com.laker.xlibrary.view;
+package com.laker.xlibrary.loader;
 
 import android.content.Context;
 import android.content.res.Resources;

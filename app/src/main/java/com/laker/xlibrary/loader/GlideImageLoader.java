@@ -5,7 +5,6 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
-import com.laker.xlibrary.view.GlideCircleTransform;
 import com.laker.xlibs.utils.imageload.ImageLoader;
 
 
