@@ -8,4 +8,5 @@ include ':libs:banner'
 include ':libs:gridviewpager'
 include ':libs:pay'
 include ':libs:dropDownMenu'
+include ':libs:update'
 
