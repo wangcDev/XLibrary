@@ -10,6 +10,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 
+import com.amap.api.services.district.DistrictResult;
+import com.amap.api.services.district.DistrictSearch;
+import com.amap.api.services.district.DistrictSearchQuery;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -26,7 +29,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements DistrictSearch.OnDistrictSearchListener {
     @Bind(R.id.tab_layout)
     CommonTabLayout tabLayout;
 
@@ -71,6 +74,16 @@ public class MainActivity extends BaseActivity {
         initFragment(savedInstanceState);
         tabLayout.measure(0, 0);
         tabLayoutHeight = tabLayout.getMeasuredHeight();
+
+        // 设置行政区划查询监听
+        DistrictSearch districtSearch = new DistrictSearch(this);
+        districtSearch.setOnDistrictSearchListener(this);
+        // 查询中国的区划
+        DistrictSearchQuery query = new DistrictSearchQuery();
+        query.setKeywords("中国");
+        districtSearch.setQuery(query);
+        // 异步查询行政区
+        districtSearch.searchDistrictAsyn();
     }
 
     @Override
@@ -245,5 +258,10 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onDistrictSearched(DistrictResult districtResult) {
+
     }
 }

@@ -14,7 +14,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="f80d3e429abe63c379c6a89893c41404" />
         <activity android:name=".ui.activity.MainActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".ui.activity.CategoryDetailActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

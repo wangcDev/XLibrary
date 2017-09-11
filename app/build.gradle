@@ -40,4 +40,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.8.0'
     testCompile 'junit:junit:4.12'
+
+//    compile 'com.amap.api:search:5.0.0'
 }

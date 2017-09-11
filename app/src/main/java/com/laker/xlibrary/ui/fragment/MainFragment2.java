@@ -41,7 +41,7 @@ public class MainFragment2 extends BaseFragment implements OnFilterDoneListener 
 
     private void initFilterDropDownView() {
         String[] titleList = new String[]{"第一个", "第二个", "第三个", "第四个"};
-        dropDownMenu.setMenuAdapter(new DropMenuAdapter(getActivity(), titleList, this));
+//        dropDownMenu.setMenuAdapter(new DropMenuAdapter(getActivity(), titleList, this));
     }
 
     @Override
