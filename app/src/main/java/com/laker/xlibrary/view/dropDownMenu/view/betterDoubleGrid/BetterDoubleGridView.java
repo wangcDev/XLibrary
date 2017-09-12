@@ -13,8 +13,6 @@ import android.widget.TextView;
 
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
 import com.laker.xlibrary.R;
-import com.laker.xlibrary.view.dropDownMenu.entity.FilterUrl;
-import com.laker.xlibrary.view.dropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 
 import java.util.List;
 
@@ -141,9 +139,6 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
 
     @OnClick(R.id.bt_confirm)
     public void clickDone() {
-
-        FilterUrl.instance().doubleGridTop = mTopSelectedTextView == null ? "" : (String) mTopSelectedTextView.getTag();
-        FilterUrl.instance().doubleGridBottom = mBottomSelectedTextView == null ? "" : (String) mBottomSelectedTextView.getTag();
 
         String top = mTopSelectedTextView == null ? "" : (String) mTopSelectedTextView.getTag(R.id.tag_content);
         String bottom = mBottomSelectedTextView == null ? "" : (String) mBottomSelectedTextView.getTag(R.id.tag_content);

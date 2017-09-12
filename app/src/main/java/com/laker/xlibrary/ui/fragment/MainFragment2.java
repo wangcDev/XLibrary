@@ -13,12 +13,9 @@ import com.laker.xlibrary.view.dropDownMenu.entity.FilterUrl;
 import butterknife.Bind;
 
 
-public class MainFragment2 extends BaseFragment implements OnFilterDoneListener {
+public class MainFragment2 extends BaseFragment  {
     @Bind(R.id.tv_content)
     TextView tv_content;
-
-    @Bind(R.id.dropDownMenu)
-    DropDownMenu dropDownMenu;
 
     @Bind(R.id.mFilterContentView)
     TextView mFilterContentView;
@@ -31,26 +28,10 @@ public class MainFragment2 extends BaseFragment implements OnFilterDoneListener 
     @Override
     public void initData(Bundle savedInstanceState) {
         tv_content.setText("this is fragment 2");
-        initFilterDropDownView();
     }
 
     @Override
     public void initView() {
 
-    }
-
-    private void initFilterDropDownView() {
-        String[] titleList = new String[]{"第一个", "第二个", "第三个", "第四个"};
-//        dropDownMenu.setMenuAdapter(new DropMenuAdapter(getActivity(), titleList, this));
-    }
-
-    @Override
-    public void onFilterDone(int position, String positionTitle, int[] dataPositions) {
-        if (position != 3) {
-            dropDownMenu.setPositionIndicatorText(FilterUrl.instance().position, FilterUrl.instance().positionTitle);
-        }
-
-        dropDownMenu.close();
-        mFilterContentView.setText(FilterUrl.instance().toString());
     }
 }
