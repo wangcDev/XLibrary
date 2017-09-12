@@ -75,7 +75,7 @@ public class SingleListView<DATA> extends ListView implements AdapterView.OnItem
 
         DATA item = mAdapter.getItem(position);
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(item);
+            mOnItemClickListener.onItemClick(position,item);
         }
     }
 

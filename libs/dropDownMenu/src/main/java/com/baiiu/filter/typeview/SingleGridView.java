@@ -86,7 +86,7 @@ public class SingleGridView<DATA> extends GridView implements AdapterView.OnItem
         DATA item = mAdapter.getItem(position);
 
         if (mOnItemClickListener != null) {
-            mOnItemClickListener.onItemClick(item);
+            mOnItemClickListener.onItemClick(position,item);
         }
     }
 

@@ -89,7 +89,7 @@ public class DoubleListView<LEFTD, RIGHTD> extends LinearLayout implements Adapt
     }
 
     public interface OnRightItemClickListener<LEFTD, RIGHTD> {
-        void onRightItemClick(LEFTD item, RIGHTD childItem);
+        void onRightItemClick(LEFTD item, RIGHTD childItem,int leftPosition,int rightPosition);
     }
 
     public DoubleListView<LEFTD, RIGHTD> onLeftItemClickListener(OnLeftItemClickListener<LEFTD, RIGHTD> onLeftItemClickListener) {
@@ -146,7 +146,7 @@ public class DoubleListView<LEFTD, RIGHTD> extends LinearLayout implements Adapt
             mRightLastChecked = position;
 
             if (mOnRightItemClickListener != null) {
-                mOnRightItemClickListener.onRightItemClick(mLeftAdapter.getItem(mLeftLastCheckedPosition), mRightAdapter.getItem(mRightLastChecked));
+                mOnRightItemClickListener.onRightItemClick(mLeftAdapter.getItem(mLeftLastCheckedPosition), mRightAdapter.getItem(mRightLastChecked),mLeftLastPosition,mRightLastChecked);
             }
         }
     }

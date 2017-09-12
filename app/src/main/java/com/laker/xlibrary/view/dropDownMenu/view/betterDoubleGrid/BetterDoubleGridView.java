@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
 import com.laker.xlibrary.R;
 import com.laker.xlibrary.view.dropDownMenu.entity.FilterUrl;
+import com.laker.xlibrary.view.dropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     private List<String> mTopGridData;
     private List<String> mBottomGridList;
     private OnFilterDoneListener mOnFilterDoneListener;
+    private int titlePosition = -1;
 
 
     public BetterDoubleGridView(Context context) {
@@ -64,6 +66,10 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     }
 
 
+    public BetterDoubleGridView setTitlePosition(int titlePosition) {
+        this.titlePosition = titlePosition;
+        return this;
+    }
     public BetterDoubleGridView setmTopGridData(List<String> mTopGridData) {
         this.mTopGridData = mTopGridData;
         return this;
@@ -87,19 +93,22 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             }
         });
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setAdapter(new DoubleGridAdapter(getContext(), mTopGridData, mBottomGridList, this));
+        DoubleGridAdapter doubleGridAdapter = new DoubleGridAdapter(getContext(), mTopGridData, mBottomGridList, this);
+        recyclerView.setAdapter(doubleGridAdapter);
 
         return this;
     }
 
     private TextView mTopSelectedTextView;
     private TextView mBottomSelectedTextView;
+    private int[]  poss = {-1,-1};
 
     @Override
     public void onClick(View v) {
 
         TextView textView = (TextView) v;
-        String text = (String) textView.getTag();
+        String text = (String) textView.getTag(R.id.tag_content);
+        int pos = (int) textView.getTag(R.id.tag_pos);
 
         if (textView == mTopSelectedTextView) {
             mTopSelectedTextView = null;
@@ -113,12 +122,14 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
             }
             mTopSelectedTextView = textView;
             textView.setSelected(true);
+            poss[0] = pos;
         } else {
             if (mBottomSelectedTextView != null) {
                 mBottomSelectedTextView.setSelected(false);
             }
             mBottomSelectedTextView = textView;
             textView.setSelected(true);
+            poss[1] = pos;
         }
     }
 
@@ -134,8 +145,10 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         FilterUrl.instance().doubleGridTop = mTopSelectedTextView == null ? "" : (String) mTopSelectedTextView.getTag();
         FilterUrl.instance().doubleGridBottom = mBottomSelectedTextView == null ? "" : (String) mBottomSelectedTextView.getTag();
 
+        String top = mTopSelectedTextView == null ? "" : (String) mTopSelectedTextView.getTag(R.id.tag_content);
+        String bottom = mBottomSelectedTextView == null ? "" : (String) mBottomSelectedTextView.getTag(R.id.tag_content);
         if (mOnFilterDoneListener != null) {
-            mOnFilterDoneListener.onFilterDone(3, "", "");
+            mOnFilterDoneListener.onFilterDone(titlePosition, top+"/"+bottom, poss);
         }
     }
 

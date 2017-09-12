@@ -45,7 +45,7 @@ public class MainFragment2 extends BaseFragment implements OnFilterDoneListener 
     }
 
     @Override
-    public void onFilterDone(int position, String positionTitle, String urlValue) {
+    public void onFilterDone(int position, String positionTitle, int[] dataPositions) {
         if (position != 3) {
             dropDownMenu.setPositionIndicatorText(FilterUrl.instance().position, FilterUrl.instance().positionTitle);
         }

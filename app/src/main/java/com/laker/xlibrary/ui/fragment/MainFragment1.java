@@ -136,6 +136,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
                 })
                 .init(initGridPagerData());
 
+
     }
 
     @Override

@@ -6,5 +6,7 @@ package com.baiiu.filter.interfaces;
  * description:
  */
 public interface OnFilterDoneListener {
-    void onFilterDone(int position, String positionTitle, String urlValue);
+//    void onFilterDone(int position, String positionTitle, String urlValue);
+    //如果是双ListView或双GridView,dataPosition要存放两个位置
+    void onFilterDone(int titlePosition, String positionTitle,int[] dataPositions);
 }

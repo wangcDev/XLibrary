@@ -13,12 +13,10 @@ import com.baiiu.filter.interfaces.OnFilterItemClickListener;
 import com.baiiu.filter.typeview.DoubleListView;
 import com.baiiu.filter.typeview.SingleGridView;
 import com.baiiu.filter.typeview.SingleListView;
-import com.baiiu.filter.util.CommonUtil;
 import com.baiiu.filter.util.UIUtil;
 import com.baiiu.filter.view.FilterCheckedTextView;
 import com.laker.xlibrary.R;
 import com.laker.xlibrary.view.dropDownMenu.entity.FilterDistrict;
-import com.laker.xlibrary.view.dropDownMenu.entity.FilterType;
 import com.laker.xlibrary.view.dropDownMenu.entity.FilterUrl;
 import com.laker.xlibrary.view.dropDownMenu.view.betterDoubleGrid.BetterDoubleGridView;
 
@@ -36,7 +34,7 @@ public class DropMenuAdapter implements MenuAdapter {
     private String[] titles;
     private List<FilterDistrict> leftData;
 
-    public DropMenuAdapter(Context context, String[] titles,List<FilterDistrict> leftData,OnFilterDoneListener onFilterDoneListener) {
+    public DropMenuAdapter(Context context, String[] titles, List<FilterDistrict> leftData, OnFilterDoneListener onFilterDoneListener) {
         this.mContext = context;
         this.titles = titles;
         this.onFilterDoneListener = onFilterDoneListener;
@@ -68,24 +66,24 @@ public class DropMenuAdapter implements MenuAdapter {
 
         switch (position) {
             case 0:
-                view = createSingleListView();
+                view = createSingleListView(0);
                 break;
             case 1:
-                view = createDoubleListViewWithDistrict2(leftData);
+                view = createDoubleListViewWithDistrict2(1,leftData);
                 break;
             case 2:
-                view = createSingleGridView();
+                view = createSingleGridView(2);
                 break;
             case 3:
                 // view = createDoubleGrid();
-                view = createBetterDoubleGrid();
+                view = createBetterDoubleGrid(3);
                 break;
         }
 
         return view;
     }
 
-    private View createSingleListView() {
+    private View createSingleListView(final int titlePosition) {
         SingleListView<String> singleListView = new SingleListView<String>(mContext)
                 .adapter(new SimpleTextAdapter<String>(null, mContext) {
                     @Override
@@ -101,13 +99,13 @@ public class DropMenuAdapter implements MenuAdapter {
                 })
                 .onItemClick(new OnFilterItemClickListener<String>() {
                     @Override
-                    public void onItemClick(String item) {
+                    public void onItemClick(int pos, String item) {
                         FilterUrl.instance().singleListPosition = item;
 
                         FilterUrl.instance().position = 0;
                         FilterUrl.instance().positionTitle = item;
-
-                        onFilterDone();
+                        int[] ints = {pos};
+                        onFilterDone(titlePosition, item, ints);
                     }
                 });
 
@@ -121,257 +119,137 @@ public class DropMenuAdapter implements MenuAdapter {
     }
 
 
-    private View createDoubleListViewWithDistrict2(List<FilterDistrict> left) {
+    private View createDoubleListViewWithDistrict2(final int titlePosition, List<FilterDistrict> left) {
         DoubleListView<FilterDistrict, DistrictItem> comTypeDoubleListView = new DoubleListView<FilterDistrict, DistrictItem>(mContext)
-        .leftAdapter(new SimpleTextAdapter<FilterDistrict>(null ,mContext) {
-            @Override
-            public String provideText(FilterDistrict districtItem) {
-                return districtItem.desc.getName();
-            }
-        })
-        .rightAdapter(new SimpleTextAdapter<DistrictItem>(null ,mContext) {
+                .leftAdapter(new SimpleTextAdapter<FilterDistrict>(null, mContext) {
                     @Override
-                    public String provideText(DistrictItem districtItem) {
-                        return null;
+                    public String provideText(FilterDistrict districtItem) {
+                        return districtItem.desc.getName();
                     }
                 })
-        .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<FilterDistrict, DistrictItem>() {
-            @Override
-            public List<DistrictItem> provideRightList(FilterDistrict leftAdapter, int position) {
-                return leftAdapter.child;
-            }
-        })
-        .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<FilterDistrict, DistrictItem>() {
-            @Override
-            public void onRightItemClick(FilterDistrict item, DistrictItem childItem) {
-
-            }
-        });
-        comTypeDoubleListView.setLeftList(left,0);
-//        List<DistrictItem> right = new ArrayList<>();
-//        for (int i = 0; i <left.size() ; i++) {
-//            right.addAll(left.get(i).getSubDistrict());
-//        }
-//        comTypeDoubleListView.setRightList(right,0);
+                .rightAdapter(new SimpleTextAdapter<DistrictItem>(null, mContext) {
+                    @Override
+                    public String provideText(DistrictItem districtItem) {
+                        return districtItem.getName();
+                    }
+                })
+                .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<FilterDistrict, DistrictItem>() {
+                    @Override
+                    public List<DistrictItem> provideRightList(FilterDistrict district, int position) {
+                        int[] poss = {position, -1};
+                        if (district.child.size() == 0) {
+                            onFilterDone(titlePosition, district.desc.getName(), poss);
+                        }
+                        return district.child;
+                    }
+                })
+                .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<FilterDistrict, DistrictItem>() {
+                    @Override
+                    public void onRightItemClick(FilterDistrict item, DistrictItem childItem,int leftPosition,int rightPosition) {
+                        int[] poss = {leftPosition, rightPosition};
+                        onFilterDone(titlePosition, childItem.getName(), poss);
+                    }
+                });
+        comTypeDoubleListView.setLeftList(left, 0);
+        if (left.get(0).child.size() >= 1)
+            comTypeDoubleListView.setRightList(left.get(0).child, 0);
         return comTypeDoubleListView;
     }
-//
-//
-//    private View createDoubleListViewWithDistrict(List<DistrictItem> left) {
-////        DoubleListView<FilterType, String> comTypeDoubleListView = new DoubleListView<FilterType, String>(mContext)
-////                .leftAdapter(new SimpleTextAdapter<FilterType>(null, mContext) {
-////                    @Override
-////                    public String provideText(FilterType filterType) {
-////                        return filterType.desc;
-////                    }
-////
-////                    @Override
-////                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-////                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-////                    }
-////                })
-////                .rightAdapter(new SimpleTextAdapter<String>(null, mContext) {
-////                    @Override
-////                    public String provideText(String s) {
-////                        return s;
-////                    }
-////
-////                    @Override
-////                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-////                        checkedTextView.setPadding(UIUtil.dp(mContext, 30), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-////                        checkedTextView.setBackgroundResource(android.R.color.white);
-////                    }
-////                })
-////                .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<FilterType, String>() {
-////                    @Override
-////                    public List<String> provideRightList(FilterType item, int position) {
-////                        List<String> child = item.child;
-////                        if (CommonUtil.isEmpty(child)) {
-////                            FilterUrl.instance().doubleListLeft = item.desc;
-////                            FilterUrl.instance().doubleListRight = "";
-////
-////                            FilterUrl.instance().position = 1;
-////                            FilterUrl.instance().positionTitle = item.desc;
-////
-////                            onFilterDone();
-////                        }
-////
-////                        return child;
-////                    }
-////                })
-////                .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<FilterType, String>() {
-////                    @Override
-////                    public void onRightItemClick(FilterType item, String string) {
-////                        FilterUrl.instance().doubleListLeft = item.desc;
-////                        FilterUrl.instance().doubleListRight = string;
-////
-////                        FilterUrl.instance().position = 1;
-////                        FilterUrl.instance().positionTitle = string;
-////
-////                        onFilterDone();
-////                    }
-////                });
-////
-////
-////        List<FilterType> list = new ArrayList<>();
-////
-////        //第一项
-////        FilterType filterType = new FilterType();
-////        filterType.desc = "10";
-////        list.add(filterType);
-////
-////        //第二项
-////        filterType = new FilterType();
-////        filterType.desc = "11";
-////        List<String> childList = new ArrayList<>();
-////        for (int i = 0; i < 13; ++i) {
-////            childList.add("11" + i);
-////        }
-////        filterType.child = childList;
-////        list.add(filterType);
-////
-////        //第三项
-////        filterType = new FilterType();
-////        filterType.desc = "12";
-////        childList = new ArrayList<>();
-////        for (int i = 0; i < 3; ++i) {
-////            childList.add("12" + i);
-////        }
-////        filterType.child = childList;
-////        list.add(filterType);
-////
-////        //初始化选中.
-////        comTypeDoubleListView.setLeftList(list, 1);
-////        comTypeDoubleListView.setRightList(list.get(1).child, -1);
-////        comTypeDoubleListView.getLeftListView().setBackgroundColor(mContext.getResources().getColor(R.color.b_c_fafafa));
-//        DoubleListView<DistrictItem, DistrictItem> comTypeDoubleListView = new DoubleListView<DistrictItem, DistrictItem>(mContext)
-//        .leftAdapter(new SimpleTextAdapter<DistrictItem>(null ,mContext) {
-//            @Override
-//            public String provideText(DistrictItem districtItem) {
-//                return districtItem.getName();
-//            }
-//        })
-//        .rightAdapter(new SimpleTextAdapter<DistrictItem>(null ,mContext) {
+
+
+//    private View createDoubleListView() {
+//        DoubleListView<FilterType, String> comTypeDoubleListView = new DoubleListView<FilterType, String>(mContext)
+//                .leftAdapter(new SimpleTextAdapter<FilterType>(null, mContext) {
 //                    @Override
-//                    public String provideText(DistrictItem districtItem) {
-//                        return null;
+//                    public String provideText(FilterType filterType) {
+//                        return filterType.desc;
+//                    }
+//
+//                    @Override
+//                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
+//                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
 //                    }
 //                })
-//        .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<DistrictItem, DistrictItem>() {
-//            @Override
-//            public List<DistrictItem> provideRightList(DistrictItem leftAdapter, int position) {
-//                return null;
-//            }
-//        })
-//        .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<DistrictItem, DistrictItem>() {
-//            @Override
-//            public void onRightItemClick(DistrictItem item, DistrictItem childItem) {
+//                .rightAdapter(new SimpleTextAdapter<String>(null, mContext) {
+//                    @Override
+//                    public String provideText(String s) {
+//                        return s;
+//                    }
 //
-//            }
-//        });
-//        comTypeDoubleListView.setLeftList(left,0);
-//        List<DistrictItem> right = new ArrayList<>();
-//        for (int i = 0; i <left.size() ; i++) {
-//            right.addAll(left.get(i).getSubDistrict());
+//                    @Override
+//                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
+//                        checkedTextView.setPadding(UIUtil.dp(mContext, 30), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
+//                        checkedTextView.setBackgroundResource(android.R.color.white);
+//                    }
+//                })
+//                .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<FilterType, String>() {
+//                    @Override
+//                    public List<String> provideRightList(FilterType item, int position) {
+//                        List<String> child = item.child;
+//                        if (CommonUtil.isEmpty(child)) {
+//                            FilterUrl.instance().doubleListLeft = item.desc;
+//                            FilterUrl.instance().doubleListRight = "";
+//
+//                            FilterUrl.instance().position = 1;
+//                            FilterUrl.instance().positionTitle = item.desc;
+//
+//                            onFilterDone();
+//                        }
+//
+//                        return child;
+//                    }
+//                })
+//                .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<FilterType, String>() {
+//                    @Override
+//                    public void onRightItemClick(FilterType item, String string,int pos) {
+//                        FilterUrl.instance().doubleListLeft = item.desc;
+//                        FilterUrl.instance().doubleListRight = string;
+//
+//                        FilterUrl.instance().position = 1;
+//                        FilterUrl.instance().positionTitle = string;
+//
+//                        onFilterDone();
+//                    }
+//                });
+//
+//
+//        List<FilterType> list = new ArrayList<>();
+//
+//        //第一项
+//        FilterType filterType = new FilterType();
+//        filterType.desc = "10";
+//        list.add(filterType);
+//
+//        //第二项
+//        filterType = new FilterType();
+//        filterType.desc = "11";
+//        List<String> childList = new ArrayList<>();
+//        for (int i = 0; i < 13; ++i) {
+//            childList.add("11" + i);
 //        }
-//        comTypeDoubleListView.setRightList(right,0);
+//        filterType.child = childList;
+//        list.add(filterType);
+//
+//        //第三项
+//        filterType = new FilterType();
+//        filterType.desc = "12";
+//        childList = new ArrayList<>();
+//        for (int i = 0; i < 3; ++i) {
+//            childList.add("12" + i);
+//        }
+//        filterType.child = childList;
+//        list.add(filterType);
+//
+//        //初始化选中.
+//        comTypeDoubleListView.setLeftList(list, 1);
+//        comTypeDoubleListView.setRightList(list.get(1).child, -1);
+//        comTypeDoubleListView.getLeftListView().setBackgroundColor(mContext.getResources().getColor(R.color.b_c_fafafa));
+//
 //        return comTypeDoubleListView;
 //    }
 
 
-    private View createDoubleListView() {
-        DoubleListView<FilterType, String> comTypeDoubleListView = new DoubleListView<FilterType, String>(mContext)
-                .leftAdapter(new SimpleTextAdapter<FilterType>(null, mContext) {
-                    @Override
-                    public String provideText(FilterType filterType) {
-                        return filterType.desc;
-                    }
-
-                    @Override
-                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-                    }
-                })
-                .rightAdapter(new SimpleTextAdapter<String>(null, mContext) {
-                    @Override
-                    public String provideText(String s) {
-                        return s;
-                    }
-
-                    @Override
-                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-                        checkedTextView.setPadding(UIUtil.dp(mContext, 30), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-                        checkedTextView.setBackgroundResource(android.R.color.white);
-                    }
-                })
-                .onLeftItemClickListener(new DoubleListView.OnLeftItemClickListener<FilterType, String>() {
-                    @Override
-                    public List<String> provideRightList(FilterType item, int position) {
-                        List<String> child = item.child;
-                        if (CommonUtil.isEmpty(child)) {
-                            FilterUrl.instance().doubleListLeft = item.desc;
-                            FilterUrl.instance().doubleListRight = "";
-
-                            FilterUrl.instance().position = 1;
-                            FilterUrl.instance().positionTitle = item.desc;
-
-                            onFilterDone();
-                        }
-
-                        return child;
-                    }
-                })
-                .onRightItemClickListener(new DoubleListView.OnRightItemClickListener<FilterType, String>() {
-                    @Override
-                    public void onRightItemClick(FilterType item, String string) {
-                        FilterUrl.instance().doubleListLeft = item.desc;
-                        FilterUrl.instance().doubleListRight = string;
-
-                        FilterUrl.instance().position = 1;
-                        FilterUrl.instance().positionTitle = string;
-
-                        onFilterDone();
-                    }
-                });
-
-
-        List<FilterType> list = new ArrayList<>();
-
-        //第一项
-        FilterType filterType = new FilterType();
-        filterType.desc = "10";
-        list.add(filterType);
-
-        //第二项
-        filterType = new FilterType();
-        filterType.desc = "11";
-        List<String> childList = new ArrayList<>();
-        for (int i = 0; i < 13; ++i) {
-            childList.add("11" + i);
-        }
-        filterType.child = childList;
-        list.add(filterType);
-
-        //第三项
-        filterType = new FilterType();
-        filterType.desc = "12";
-        childList = new ArrayList<>();
-        for (int i = 0; i < 3; ++i) {
-            childList.add("12" + i);
-        }
-        filterType.child = childList;
-        list.add(filterType);
-
-        //初始化选中.
-        comTypeDoubleListView.setLeftList(list, 1);
-        comTypeDoubleListView.setRightList(list.get(1).child, -1);
-        comTypeDoubleListView.getLeftListView().setBackgroundColor(mContext.getResources().getColor(R.color.b_c_fafafa));
-
-        return comTypeDoubleListView;
-    }
-
-
-    private View createSingleGridView() {
+    private View createSingleGridView(final int titlePosition) {
         SingleGridView<String> singleGridView = new SingleGridView<String>(mContext)
                 .adapter(new SimpleTextAdapter<String>(null, mContext) {
                     @Override
@@ -388,13 +266,13 @@ public class DropMenuAdapter implements MenuAdapter {
                 })
                 .onItemClick(new OnFilterItemClickListener<String>() {
                     @Override
-                    public void onItemClick(String item) {
+                    public void onItemClick(int pos, String item) {
                         FilterUrl.instance().singleGridPosition = item;
 
                         FilterUrl.instance().position = 2;
                         FilterUrl.instance().positionTitle = item;
-
-                        onFilterDone();
+                        int[] ints = {pos};
+                        onFilterDone(titlePosition, item, ints);
 
                     }
                 });
@@ -410,7 +288,7 @@ public class DropMenuAdapter implements MenuAdapter {
     }
 
 
-    private View createBetterDoubleGrid() {
+    private View createBetterDoubleGrid(int titlePosition) {
 
         List<String> phases = new ArrayList<>();
         for (int i = 0; i < 10; ++i) {
@@ -423,6 +301,7 @@ public class DropMenuAdapter implements MenuAdapter {
 
 
         return new BetterDoubleGridView(mContext)
+                .setTitlePosition(titlePosition)
                 .setmTopGridData(phases)
                 .setmBottomGridList(areas)
                 .setOnFilterDoneListener(onFilterDoneListener)
@@ -430,13 +309,16 @@ public class DropMenuAdapter implements MenuAdapter {
     }
 
 
-
-
-
-    private void onFilterDone() {
+    private void onFilterDone(int titlePosition, String positionTitle, int[] dataPositions) {
         if (onFilterDoneListener != null) {
-            onFilterDoneListener.onFilterDone(0, "", "");
+            onFilterDoneListener.onFilterDone(titlePosition, positionTitle, dataPositions);
         }
     }
+
+//    private void onFilterDone(int position, String positionTitle, String urlValue) {
+//        if (onFilterDoneListener != null) {
+//            onFilterDoneListener.onFilterDone(position, positionTitle, urlValue);
+//        }
+//    }
 
 }
