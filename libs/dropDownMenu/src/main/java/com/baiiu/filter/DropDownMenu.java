@@ -14,6 +14,8 @@ import com.baiiu.filter.util.SimpleAnimationListener;
 import com.baiiu.filter.util.UIUtil;
 import com.baiiu.filter.view.FixedTabIndicator;
 
+import java.util.List;
+
 
 /**
  * Created by baiiu.
@@ -89,14 +91,30 @@ public class DropDownMenu extends RelativeLayout implements View.OnClickListener
     }
 
     public void setMenuAdapter(MenuAdapter adapter) {
+//        verifyContainer();
+//
+//        mMenuAdapter = adapter;
+//        verifyMenuAdapter();
+//
+//        //1.设置title
+//        fixedTabIndicator.setTitles(mMenuAdapter);
+//
+//        //2.添加view
+//        setPositionView();
+        setMenuAdapter(adapter,null);
+    }
+
+    public void setMenuAdapter(MenuAdapter adapter, int[] backGroundResIds) {
         verifyContainer();
 
         mMenuAdapter = adapter;
         verifyMenuAdapter();
-
+        //先设置背景资源id数组
+        if (backGroundResIds != null){
+            fixedTabIndicator.setTitleBackgroundResource(backGroundResIds);
+        }
         //1.设置title
         fixedTabIndicator.setTitles(mMenuAdapter);
-
         //2.添加view
         setPositionView();
     }

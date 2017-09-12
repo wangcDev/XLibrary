@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -54,6 +55,7 @@ public class FixedTabIndicator extends LinearLayout {
     private int mCurrentIndicatorPosition;// 上一个指针选中条目
     private int mLastIndicatorPosition;// 上一个指针选中条目
     private OnItemClickListener mOnItemClickListener;
+    private int[] backGroundResIds = null;
 
 
     public FixedTabIndicator(Context context) {
@@ -249,6 +251,9 @@ public class FixedTabIndicator extends LinearLayout {
         params.weight = 1;
         params.gravity = Gravity.CENTER;
         rl.setLayoutParams(params);
+        if (backGroundResIds != null){
+            rl.setBackgroundResource(backGroundResIds[pos]);
+        }
 
         rl.setOnClickListener(new OnClickListener() {
             @Override
@@ -290,5 +295,9 @@ public class FixedTabIndicator extends LinearLayout {
 
     public int getLastIndicatorPosition() {
         return mLastIndicatorPosition;
+    }
+
+    public void setTitleBackgroundResource(int[] backGroundResIds) {
+        this.backGroundResIds = backGroundResIds;
     }
 }

@@ -77,7 +77,8 @@ public class CategoryDetailActivity extends BaseActivity implements OnFilterDone
 
     private void initFilterDropDownView(List<FilterDistrict> leftData) {
         String[] titleList = new String[]{"第一个", "第二个", "第三个", "第四个"};
-        dropDownMenu.setMenuAdapter(new DropMenuAdapter(this, titleList, leftData, this));
+        int[] resIds = {R.mipmap.ic_category_0,R.mipmap.ic_category_1,R.mipmap.ic_category_2,R.mipmap.ic_category_3};
+        dropDownMenu.setMenuAdapter(new DropMenuAdapter(this, titleList, leftData, this),resIds);
     }
 
     @Override
