@@ -123,7 +123,6 @@ public class FixedTabIndicator extends LinearLayout {
             if (child == null || child.getVisibility() == View.GONE) {
                 continue;
             }
-
             canvas.drawLine(child.getRight(), mDividerPadding, child.getRight(), measureHeight - mDividerPadding, mDividerPaint);
         }
 
