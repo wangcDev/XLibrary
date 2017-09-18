@@ -1,6 +1,7 @@
 package com.laker.xlibrary.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.amap.api.services.core.AMapException;
@@ -17,6 +18,7 @@ import com.laker.xlibrary.view.dropDownMenu.DropMenuAdapter;
 import com.laker.xlibrary.view.dropDownMenu.entity.FilterDistrict;
 import com.laker.xlibs.utils.log.XLog;
 import com.laker.xlibs.widget.XToast;
+import com.xsf.zxing.ScanMainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class CategoryDetailActivity extends BaseActivity implements OnFilterDoneListener, DistrictSearch.OnDistrictSearchListener {
     @Bind(R.id.tv_content)
@@ -189,5 +192,14 @@ public class CategoryDetailActivity extends BaseActivity implements OnFilterDone
                     + center.getLatitude() + ")\n");
         }
         return sb.toString();
+    }
+
+    @OnClick(R.id.tv_content)
+    public void click(View view){
+        switch (view.getId()){
+            case R.id.tv_content:
+                startActivity(ScanMainActivity.class);
+                break;
+        }
     }
 }
