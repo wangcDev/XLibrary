@@ -9,5 +9,4 @@ include ':libs:gridviewpager'
 include ':libs:pay'
 include ':libs:dropDownMenu'
 include ':libs:update'
-include ':libs:xQR'
 
