@@ -18,7 +18,6 @@ import com.laker.xlibrary.view.dropDownMenu.DropMenuAdapter;
 import com.laker.xlibrary.view.dropDownMenu.entity.FilterDistrict;
 import com.laker.xlibs.utils.log.XLog;
 import com.laker.xlibs.widget.XToast;
-import com.xsf.zxing.ScanMainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -198,7 +197,7 @@ public class CategoryDetailActivity extends BaseActivity implements OnFilterDone
     public void click(View view){
         switch (view.getId()){
             case R.id.tv_content:
-                startActivity(ScanMainActivity.class);
+//                startActivity(ScanMainActivity.class);
                 break;
         }
     }

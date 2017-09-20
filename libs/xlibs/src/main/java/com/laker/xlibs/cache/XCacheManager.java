@@ -26,6 +26,10 @@ public class XCacheManager {
         calculateCacheSizeAndCacheCount();
     }
 
+    public AtomicLong getCacheSize() {
+        return cacheSize;
+    }
+
     /**
      * 计算 cacheSize和cacheCount
      */

@@ -30,7 +30,12 @@ public class XCache {
     private static final int maxSize = 1000 * 1000 * 50; // 50 mb
     private static final int maxCount = Integer.MAX_VALUE; // 不限制存放数据的数量
     private static Map<String, XCache> mInstanceMap = new HashMap<String, XCache>();
-    private XCacheManager mCache;
+
+    public XCacheManager getxCacheManager() {
+        return xCacheManager;
+    }
+
+    private XCacheManager xCacheManager;
 
     public static XCache get(Context ctx) {
         return get(ctx, "XCache");
@@ -68,7 +73,7 @@ public class XCache {
             throw new RuntimeException("can't make dirs in "
                     + cacheDir.getAbsolutePath());
         }
-        mCache = new XCacheManager(cacheDir, maxSize, maxCount);
+        xCacheManager = new XCacheManager(cacheDir, maxSize, maxCount);
     }
 
     /**
@@ -80,7 +85,7 @@ public class XCache {
      *            保存的String数据
      */
     public void put(String key, String value) {
-        File file = mCache.newFile(key);
+        File file = xCacheManager.newFile(key);
         BufferedWriter out = null;
         try {
             out = new BufferedWriter(new FileWriter(file), 1024);
@@ -96,7 +101,7 @@ public class XCache {
                     e.printStackTrace();
                 }
             }
-            mCache.put(file);
+            xCacheManager.put(file);
         }
     }
 
@@ -121,7 +126,7 @@ public class XCache {
      * @return String 数据
      */
     public String getAsString(String key) {
-        File file = mCache.get(key);
+        File file = xCacheManager.get(key);
         if (!file.exists())
             return null;
         boolean removeFile = false;
@@ -164,7 +169,7 @@ public class XCache {
      *            保存的数据
      */
     public void put(String key, byte[] value) {
-        File file = mCache.newFile(key);
+        File file = xCacheManager.newFile(key);
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(file);
@@ -180,7 +185,7 @@ public class XCache {
                     e.printStackTrace();
                 }
             }
-            mCache.put(file);
+            xCacheManager.put(file);
         }
     }
 
@@ -208,7 +213,7 @@ public class XCache {
         RandomAccessFile RAFile = null;
         boolean removeFile = false;
         try {
-            File file = mCache.get(key);
+            File file = xCacheManager.get(key);
             if (!file.exists())
                 return null;
             RAFile = new RandomAccessFile(file, "r");
@@ -405,7 +410,7 @@ public class XCache {
      * @return value 缓存的文件
      */
     public File file(String key) {
-        File f = mCache.newFile(key);
+        File f = xCacheManager.newFile(key);
         if (f.exists())
             return f;
         return null;
@@ -418,14 +423,14 @@ public class XCache {
      * @return 是否移除成功
      */
     public boolean remove(String key) {
-        return mCache.remove(key);
+        return xCacheManager.remove(key);
     }
 
     /**
      * 清除所有数据
      */
     public void clear() {
-        mCache.clear();
+        xCacheManager.clear();
     }
    
 }
