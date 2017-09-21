@@ -118,7 +118,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
 
-        mGridViewPager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, XFrame.screenHeight / 4));
+//        mGridViewPager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, XFrame.screenHeight / 4));
         mGridViewPager
                 .setNumColumns(5)
                 .setNumRows(2)
