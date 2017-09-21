@@ -25,7 +25,6 @@ public class ViewPagerAdapter<T extends View> extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        Log.e("11111111111111","getHeight = "+mViewList.get(position).getHeight()+"getWidth = "+mViewList.get(position).getWidth());
         container.addView(mViewList.get(position));
         return (mViewList.get(position));
     }
