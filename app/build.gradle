@@ -33,6 +33,7 @@ dependencies {
     compile project(':libs:gridviewpager')
     compile project(':libs:pay')
     compile project(':libs:dropDownMenu')
+    compile project(':libs:expandpoptab')
 //    compile project(':libs:xQR')
     compile rootProject.ext.dependencies["multidex"]
     compile 'com.android.support:appcompat-v7:25.3.1'
