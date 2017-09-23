@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpandPopTabView extends LinearLayout implements OnDismissListener {
     private ArrayList<RelativeLayout> mViewLists = new ArrayList<RelativeLayout>();
@@ -30,6 +32,7 @@ public class ExpandPopTabView extends LinearLayout implements OnDismissListener 
     private int mToggleTextColor;
     private int mPopViewBackgroundColor;
     private float mToggleTextSize;
+    List<ToggleButton> toggleButtonList = new ArrayList<>();
 
     public ExpandPopTabView(Context context) {
         super(context);
@@ -63,7 +66,7 @@ public class ExpandPopTabView extends LinearLayout implements OnDismissListener 
         setOrientation(LinearLayout.HORIZONTAL);
     }
 
-    public void addItemToExpandTab(String tabTitle, ViewGroup tabItemView) {
+    public void addItemToExpandTab2(String tabTitle, ViewGroup tabItemView) {
         ToggleButton tButton = (ToggleButton) LayoutInflater.from(mContext).inflate(R.layout.expand_tab_toggle_button, this, false);
         if(mToggleBtnBackground != -1){
             tButton.setBackgroundResource(mToggleBtnBackground);
@@ -112,6 +115,72 @@ public class ExpandPopTabView extends LinearLayout implements OnDismissListener 
 
         mViewLists.add(popContainerView);
     }
+    public void addItemToExpandTab(String tabTitle, ViewGroup tabItemView) {
+        LinearLayout view = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.expand_tab_toggle_button2, this, false);
+        LinearLayout root = (LinearLayout)view.findViewById(R.id.ll_root);
+        ToggleButton tButton = (ToggleButton)view.findViewById(R.id.mToggleButton);
+        if(mToggleBtnBackground != -1){
+            tButton.setBackgroundResource(mToggleBtnBackground);
+        }
+        if(mToggleBtnBackgroundColor != -1){
+            tButton.setBackgroundColor(mToggleBtnBackgroundColor);
+        }
+        if(mToggleTextColor != -1){
+            tButton.setTextColor(mToggleTextColor);
+        }else {
+            tButton.setTextColor(Color.BLACK);
+        }
+        if(mToggleTextSize != -1){
+            tButton.setTextSize(mToggleTextSize);
+        }
+
+        tButton.setText(tabTitle);
+        tButton.setTag(++mTabPostion);
+//        root.setTag(++mTabPostion);
+        toggleButtonList.add(tButton);
+        Log.e("11111111","add  view = "+view.toString());
+        tButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Log.e("11111111","onClick  view.getTag() = "+view.getTag());
+//
+//                mSelectPosition = (Integer) view.getTag();
+//                ToggleButton tButton =  toggleButtonList.get(mSelectPosition);
+//                if (mSelectedToggleBtn != null && mSelectedToggleBtn != tButton) {
+//                    mSelectedToggleBtn.setChecked(false);
+//                }
+//                mSelectedToggleBtn = tButton;
+//                expandPopView();
+
+                ToggleButton tButton = (ToggleButton) view;
+                if (mSelectedToggleBtn != null && mSelectedToggleBtn != tButton) {
+                    mSelectedToggleBtn.setChecked(false);
+                }
+                mSelectedToggleBtn = tButton;
+                mSelectPosition = (Integer) mSelectedToggleBtn.getTag();
+                expandPopView();
+            }
+        });
+        addView(view);
+
+        RelativeLayout popContainerView = new RelativeLayout(mContext);
+
+        if(mPopViewBackgroundColor != -1){
+            popContainerView.setBackgroundColor(mPopViewBackgroundColor);
+        }else{
+            popContainerView.setBackgroundColor(Color.parseColor("#b0000000"));
+        }
+        RelativeLayout.LayoutParams rl = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, (int) (mDisplayHeight * 0.7));
+        popContainerView.addView(tabItemView, rl);
+        popContainerView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onExpandPopView();
+            }
+        });
+
+        mViewLists.add(popContainerView);
+    }
 
     public void setToggleButtonText(String tabTitle){
         ToggleButton toggleButton = (ToggleButton) getChildAt(mSelectPosition);
@@ -125,7 +194,6 @@ public class ExpandPopTabView extends LinearLayout implements OnDismissListener 
             mPopupWindow.setFocusable(false);
             mPopupWindow.setOutsideTouchable(true);
         }
-
         if (mSelectedToggleBtn.isChecked()) {
             if (!mPopupWindow.isShowing()) {
                 showPopView();

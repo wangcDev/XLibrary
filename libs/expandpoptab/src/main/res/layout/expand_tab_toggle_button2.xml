@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:id="@+id/ll_root"
+    android:orientation="horizontal"
+    android:gravity="center">
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/iv_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <ToggleButton
+        android:id="@+id/mToggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textOff="@null"
+        android:textOn="@null"
+        android:text="qqqqq"
+        android:background="@null"
+        android:singleLine="true"
+        android:textColor="@color/black"/>
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/iv_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
