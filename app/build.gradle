@@ -26,7 +26,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':libs:xlibs')
-    compile project(':libs:xLibsCustom')
+//    compile project(':libs:xLibsCustom')
     compile project(':libs:okgo')
     compile project(':libs:FlycoTabLayout_Lib')
     compile project(':libs:banner')
