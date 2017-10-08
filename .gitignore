@@ -8,6 +8,7 @@
 /captures
 .externalNativeBuild
 /libs/xLibsCustom/build
+*.zip
 /gradle
 /.idea
 /libs/pay/build
