@@ -4,15 +4,6 @@ apply plugin: 'com.android.library'
 version = "1.4.9"
 
 android {
-//    compileSdkVersion 23
-//    buildToolsVersion '25.0.0'
-//
-//    defaultConfig {
-//        minSdkVersion 11
-//        targetSdkVersion 23
-//        versionCode 40
-//        versionName version
-//    }
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -37,7 +28,6 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile rootProject.ext.dependencies["support-v4"]
-//    provided 'com.android.support:support-v4:23+'
 }
 
 
