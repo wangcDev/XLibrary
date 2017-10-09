@@ -1,6 +1,5 @@
 include ':app'
 include 'libs:xlibs'
-include ':libs:xLibsCustom'
 include ':libs:FlycoTabLayout_Lib'
 include ':libs:okgo'
 include ':libs:okserver'
