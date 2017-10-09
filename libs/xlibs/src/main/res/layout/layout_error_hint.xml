@@ -41,8 +41,6 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/cell_small"
         android:layout_marginTop="@dimen/spacing_major"
-        android:text="@string/btn_reload"
-        style="@style/Widget.LazyOrder.Button"
-        />
+        android:text="@string/btn_reload"/>
 
 </LinearLayout>

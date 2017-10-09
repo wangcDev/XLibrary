@@ -22,9 +22,9 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
+//    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+//        exclude group: 'com.android.support', module: 'support-annotations'
+//    })
     compile project(':libs:xlibs')
 //    compile project(':libs:xLibsCustom')
     compile project(':libs:okgo')
@@ -36,8 +36,10 @@ dependencies {
     compile project(':libs:expandpoptab')
 //    compile project(':libs:xQR')
     compile rootProject.ext.dependencies["multidex"]
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+//    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile rootProject.ext.dependencies["appcompat-v7"]
+//    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile rootProject.ext.dependencies["constraint-layout"]
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.google.code.gson:gson:2.8.0'
