@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,8 +97,26 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
         banner.setImages(adList)
                 .setImageLoader(new GlideImageLoaderForBanner())
                 .setOnBannerListener(this)
-                .isAutoPlay(true)
+                .isLoop(false)
+                .isAutoPlay(false)
                 .start();
+        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                XLog.e("1111111111111 position = "+position+",positionOffset = "
+                        +positionOffset+",positionOffsetPixels = "+positionOffsetPixels);
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                XLog.e("2222222222222 position = "+position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                XLog.e("3333333333333333 state = "+state);
+            }
+        });
         xRecyclerViewAdapter = new XRecyclerViewAdapter<String>(recyclerView, adList2, R.layout.test) {
             @Override
             protected void bindData(XViewHolder holder, String data, int position) {
