@@ -106,14 +106,37 @@
             android:text="多个权限请求" />
 
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_request"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/button2"
-        android:layout_toRightOf="@+id/button2"
-        android:text="发起网络请求" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btn_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/button2"
+            android:layout_toRightOf="@+id/button2"
+            android:text="发起网络请求" />
+
+        <Button
+            android:id="@+id/btn_action_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/button2"
+            android:layout_toRightOf="@+id/button2"
+            android:text="action_sheet" />
+        <Button
+            android:id="@+id/btn_custom_sheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/button2"
+            android:layout_toRightOf="@+id/button2"
+            android:text="custom_sheet" />
+
+    </LinearLayout>
 
     <com.laker.xlibs.widget.loadingview.XLoadingView
         android:id="@+id/xLoadingView"

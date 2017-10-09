@@ -3,6 +3,7 @@ package com.laker.xlibs.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import java.util.List;
 
 public class ActionSheetDialog {
     private Context context;
+    private boolean isCustomView;
     private Dialog dialog;
     private TextView txt_title;
     private TextView txt_cancel;
@@ -32,13 +34,27 @@ public class ActionSheetDialog {
     private List<SheetItem> sheetItemList;
     private Display display;
     OnSheetItemClickListener listener = null;
+    OnSheetItemRightClickListener listenerRight = null;
 
-    public void OnSheetItemClickListener(OnSheetItemClickListener listener) {
+    public ActionSheetDialog OnSheetItemClickListener(OnSheetItemClickListener listener) {
         this.listener = listener;
+        return this;
+    }
+    public ActionSheetDialog OnSheetItemRightClickListener(OnSheetItemRightClickListener listenerRight) {
+        this.listenerRight = listenerRight;
+        return this;
     }
 
     public ActionSheetDialog(Context context) {
+//        this.context = context;
+//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        display = windowManager.getDefaultDisplay();
+        this(context,false);
+    }
+
+    public ActionSheetDialog(Context context,boolean isCustomView) {
         this.context = context;
+        this.isCustomView = isCustomView;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
@@ -134,6 +150,7 @@ public class ActionSheetDialog {
         return this;
     }
 
+
     /**
      * 设置条目布局
      */
@@ -152,73 +169,319 @@ public class ActionSheetDialog {
             sLayout_content.setLayoutParams(params);
         }
 
-        // 循环添加条目
-        for (int i = 0; i < size; i++) {
-            final int index = i;
-            SheetItem sheetItem = sheetItemList.get(i);
-            String strItem = sheetItem.name;
+        if (isCustomView){
+            // 循环添加条目
+            for (int i = 0; i < size; i++) {
+                View actionSheetItem = LayoutInflater.from(context).inflate(R.layout.view_actionsheet_custom_item, null);
+                final int index = i;
+                SheetItem sheetItem = sheetItemList.get(i);
+                String strItem = sheetItem.name;
 
-            if (sheetItem.itemClickListener != null) {
-                listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
-            }
-
-            TextView textView = new TextView(context);
-            textView.setText(strItem);
-            textView.setTextSize(18);
-            textView.setGravity(Gravity.CENTER);
-
-            // 背景图片
-            if (size == 1) {
-                if (showTitle) {
-                    textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
-                } else {
-                    textView.setBackgroundResource(R.drawable.actionsheet_single_selector);
+                if (sheetItem.itemClickListener != null) {
+                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
                 }
-            } else {
-                if (showTitle) {
-                    if (i >= 1 && i < size) {
-                        textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+
+                actionSheetItem.findViewById(R.id.iv_right).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (listenerRight != null) {
+                            listenerRight.onClick(index);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                TextView textView = (TextView) actionSheetItem.findViewById(R.id.tv_center);
+                textView.setText(strItem);
+                textView.setTextSize(18);
+                textView.setGravity(Gravity.CENTER);
+
+                // 背景图片
+                if (size == 1) {
+                    if (showTitle) {
+                        actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
                     } else {
-                        textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                        actionSheetItem.setBackgroundResource(R.drawable.actionsheet_single_selector);
                     }
                 } else {
-                    if (i == 0) {
-                        textView.setBackgroundResource(R.drawable.actionsheet_top_selector);
-                    } else if (i < size - 1) {
-                        textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+                    if (showTitle) {
+                        if (i >= 1 && i < size) {
+                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+                        } else {
+                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                        }
                     } else {
+                        if (i == 0) {
+                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_top_selector);
+                        } else if (i < size - 1) {
+                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+                        } else {
+                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                        }
+                    }
+                }
+
+                // 字体颜色
+                if (sheetItem.color == 0) {
+                    textView.setTextColor(0xff037BFF);
+                } else {
+                    textView.setTextColor(sheetItem.color);
+                }
+
+                // 高度
+                float scale = context.getResources().getDisplayMetrics().density;
+                int height = (int) (45 * scale + 0.5f);
+                actionSheetItem.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
+
+                // 点击事件
+                actionSheetItem.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onClick(index);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                lLayout_content.addView(actionSheetItem);
+
+            }
+        }else {
+            // 循环添加条目
+            for (int i = 0; i < size; i++) {
+                final int index = i;
+                SheetItem sheetItem = sheetItemList.get(i);
+                String strItem = sheetItem.name;
+
+                if (sheetItem.itemClickListener != null) {
+                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+                }
+
+                TextView textView = new TextView(context);
+                textView.setText(strItem);
+                textView.setTextSize(18);
+                textView.setGravity(Gravity.CENTER);
+
+                // 背景图片
+                if (size == 1) {
+                    if (showTitle) {
                         textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                    } else {
+                        textView.setBackgroundResource(R.drawable.actionsheet_single_selector);
+                    }
+                } else {
+                    if (showTitle) {
+                        if (i >= 1 && i < size) {
+                            textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+                        } else {
+                            textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                        }
+                    } else {
+                        if (i == 0) {
+                            textView.setBackgroundResource(R.drawable.actionsheet_top_selector);
+                        } else if (i < size - 1) {
+                            textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+                        } else {
+                            textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+                        }
                     }
                 }
-            }
 
-            // 字体颜色
-            if (sheetItem.color == 0) {
-                textView.setTextColor(0xff037BFF);
-            } else {
-                textView.setTextColor(sheetItem.color);
-            }
-
-            // 高度
-            float scale = context.getResources().getDisplayMetrics().density;
-            int height = (int) (45 * scale + 0.5f);
-            textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
-
-            // 点击事件
-            textView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null) {
-                        listener.onClick(index);
-                    }
-                    dialog.dismiss();
+                // 字体颜色
+                if (sheetItem.color == 0) {
+                    textView.setTextColor(0xff037BFF);
+                } else {
+                    textView.setTextColor(sheetItem.color);
                 }
-            });
 
-            lLayout_content.addView(textView);
+                // 高度
+                float scale = context.getResources().getDisplayMetrics().density;
+                int height = (int) (45 * scale + 0.5f);
+                textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
 
+                // 点击事件
+                textView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (listener != null) {
+                            listener.onClick(index);
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                lLayout_content.addView(textView);
+
+            }
         }
+
     }
+//
+//    /**
+//     * 设置条目布局
+//     */
+//    private void setSheetItems() {
+//
+//        if (sheetItemList == null || sheetItemList.size() <= 0) {
+//            return;
+//        }
+//
+//        int size = sheetItemList.size();
+//
+//        // 添加条目过多的时候控制高度
+//        if (size >= 7) {
+//            LayoutParams params = (LayoutParams) sLayout_content.getLayoutParams();
+//            params.height = display.getHeight() / 2;
+//            sLayout_content.setLayoutParams(params);
+//        }
+//
+//        if (isCustomView){
+//            // 循环添加条目
+//            for (int i = 0; i < size; i++) {
+//                View actionSheetItem = LayoutInflater.from(context).inflate(R.layout.view_actionsheet_custom_item, null);
+//                final int index = i;
+//                SheetItem sheetItem = sheetItemList.get(i);
+//                String strItem = sheetItem.name;
+//
+//                if (sheetItem.itemClickListener != null) {
+//                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+//                }
+//
+//                 actionSheetItem.findViewById(R.id.iv_right).setOnClickListener(new OnClickListener() {
+//                     @Override
+//                     public void onClick(View view) {
+//                         if (listenerRight != null) {
+//                             listenerRight.onClick(index);
+//                         }
+//                         dialog.dismiss();
+//                     }
+//                 });
+//
+//                TextView textView = (TextView) actionSheetItem.findViewById(R.id.tv_center);
+//                textView.setText(strItem);
+//                textView.setTextSize(18);
+//                textView.setGravity(Gravity.CENTER);
+//
+//                // 背景图片
+//                if (size == 1) {
+//                    if (showTitle) {
+//                        actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                    } else {
+//                        actionSheetItem.setBackgroundResource(R.drawable.actionsheet_single_selector);
+//                    }
+//                } else {
+//                    if (showTitle) {
+//                        if (i >= 1 && i < size) {
+//                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+//                        } else {
+//                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                        }
+//                    } else {
+//                        if (i == 0) {
+//                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_top_selector);
+//                        } else if (i < size - 1) {
+//                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+//                        } else {
+//                            actionSheetItem.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                        }
+//                    }
+//                }
+//
+//                // 字体颜色
+//                if (sheetItem.color == 0) {
+//                    textView.setTextColor(0xff037BFF);
+//                } else {
+//                    textView.setTextColor(sheetItem.color);
+//                }
+//
+//                // 高度
+//                float scale = context.getResources().getDisplayMetrics().density;
+//                int height = (int) (45 * scale + 0.5f);
+//                actionSheetItem.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
+//
+//                // 点击事件
+//                actionSheetItem.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (listener != null) {
+//                            listener.onClick(index);
+//                        }
+//                        dialog.dismiss();
+//                    }
+//                });
+//                lLayout_content.addView(actionSheetItem);
+//
+//            }
+//        }else {
+//           // 循环添加条目
+//            for (int i = 0; i < size; i++) {
+//                final int index = i;
+//                SheetItem sheetItem = sheetItemList.get(i);
+//                String strItem = sheetItem.name;
+//
+//                if (sheetItem.itemClickListener != null) {
+//                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+//                }
+//
+//                TextView textView = new TextView(context);
+//                textView.setText(strItem);
+//                textView.setTextSize(18);
+//                textView.setGravity(Gravity.CENTER);
+//
+//                // 背景图片
+//                if (size == 1) {
+//                    if (showTitle) {
+//                        textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                    } else {
+//                        textView.setBackgroundResource(R.drawable.actionsheet_single_selector);
+//                    }
+//                } else {
+//                    if (showTitle) {
+//                        if (i >= 1 && i < size) {
+//                            textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+//                        } else {
+//                            textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                        }
+//                    } else {
+//                        if (i == 0) {
+//                            textView.setBackgroundResource(R.drawable.actionsheet_top_selector);
+//                        } else if (i < size - 1) {
+//                            textView.setBackgroundResource(R.drawable.actionsheet_middle_selector);
+//                        } else {
+//                            textView.setBackgroundResource(R.drawable.actionsheet_bottom_selector);
+//                        }
+//                    }
+//                }
+//
+//                // 字体颜色
+//                if (sheetItem.color == 0) {
+//                    textView.setTextColor(0xff037BFF);
+//                } else {
+//                    textView.setTextColor(sheetItem.color);
+//                }
+//
+//                // 高度
+//                float scale = context.getResources().getDisplayMetrics().density;
+//                int height = (int) (45 * scale + 0.5f);
+//                textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
+//
+//                // 点击事件
+//                textView.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        if (listener != null) {
+//                            listener.onClick(index);
+//                        }
+//                        dialog.dismiss();
+//                    }
+//                });
+//
+//                lLayout_content.addView(textView);
+//
+//            }
+//        }
+//
+//    }
 
     public void show() {
         dialog.show();
@@ -227,15 +490,25 @@ public class ActionSheetDialog {
     public interface OnSheetItemClickListener {
         void onClick(int which);
     }
+    public interface OnSheetItemRightClickListener {
+        void onClick(int which);
+    }
 
     public static class SheetItem {
-        String name;
+        public String name;
+        public int id;
         OnSheetItemClickListener itemClickListener;
         int color;
 
         public SheetItem(String name) {
             this.name = name;
             this.color = 0;
+            this.id = 0;
+        }
+        public SheetItem(String name,int id) {
+            this.name = name;
+            this.color = 0;
+            this.id = id;
         }
 
         public SheetItem(String name, int color, OnSheetItemClickListener itemClickListener) {

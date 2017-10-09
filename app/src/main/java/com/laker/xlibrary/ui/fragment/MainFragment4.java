@@ -9,11 +9,6 @@ import com.laker.xlibrary.base.BaseFragment;
 
 import butterknife.Bind;
 
-/**
- * des:关注主页
- * Created by xsf
- * on 2016.09.17:07
- */
 public class MainFragment4 extends BaseFragment {
     @Bind(R.id.tv_content)
     TextView tv_content;

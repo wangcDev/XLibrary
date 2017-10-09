@@ -33,6 +33,7 @@ import com.laker.xlibs.adapter.XViewHolder;
 import com.laker.xlibs.adapter.decoration.DividerDecoration;
 import com.laker.xlibs.utils.log.XLog;
 import com.laker.xlibs.utils.permission.XPermission;
+import com.laker.xlibs.widget.ActionSheetDialog;
 import com.laker.xlibs.widget.XToast;
 import com.laker.xlibs.widget.loadingview.XLoadingView;
 import com.lzy.okgo.OkGo;
@@ -46,11 +47,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.OnClick;
 
-/**
- * des:新闻首页首页
- * Created by xsf
- * on 2016.09.16:45
- */
 public class MainFragment1 extends BaseFragment implements OnBannerListener, SwipeRefreshLayout.OnRefreshListener {
     XRecyclerViewAdapter<String> xRecyclerViewAdapter;
     @Bind(R.id.tv_content)
@@ -65,6 +61,10 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.mGridViewPager)
     GridViewPager mGridViewPager;
+
+    ActionSheetDialog mActionSheetDialog;
+    ActionSheetDialog mActionSheetDialogCustom;
+    List<ActionSheetDialog.SheetItem> dataListSheetItem = new ArrayList<>();
 
     String[] paths = {
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic1xjab4j30ci08cjrv.jpg",
@@ -87,6 +87,32 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     @Override
     public void initData(Bundle savedInstanceState) {
         tv_content.setText("this is fragment 1 ");
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相机", 0));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册", 1));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册2", 2));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册3", 3));
+        mActionSheetDialog = new ActionSheetDialog(getActivity());
+        mActionSheetDialogCustom = new ActionSheetDialog(getActivity(),true);
+        mActionSheetDialog.builder().addSheetItems(dataListSheetItem).OnSheetItemClickListener(
+                new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                XToast.normal(dataListSheetItem.get(which).name);
+            }
+        });
+        mActionSheetDialogCustom.builder().addSheetItems(dataListSheetItem).OnSheetItemClickListener(
+                new ActionSheetDialog.OnSheetItemClickListener() {
+            @Override
+            public void onClick(int which) {
+                XToast.normal(dataListSheetItem.get(which).name);
+
+            }
+        }).OnSheetItemRightClickListener(new ActionSheetDialog.OnSheetItemRightClickListener() {
+            @Override
+            public void onClick(int which) {
+                XToast.normal("right "+dataListSheetItem.get(which).name);
+            }
+        });
         for (int i = 0; i < paths.length; i++) {
             adList.add(paths[i]);
             adList2.add(paths[i]);
@@ -132,8 +158,6 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
         });
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.main_color);
-
-//        mGridViewPager.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, XFrame.screenHeight / 4));
         mGridViewPager
                 .setNumColumns(5)
                 .setNumRows(2)
@@ -175,17 +199,18 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden) {
-            XToast.info("hidden");
-            banner.stopAutoPlay();
-        } else {
-            XToast.info("show");
-            banner.startAutoPlay();
-        }
+//        if (hidden) {
+//            XToast.info("hidden");
+//            banner.stopAutoPlay();
+//        } else {
+//            XToast.info("show");
+//            banner.startAutoPlay();
+//        }
     }
 
-    @OnClick({R.id.action_network_error, R.id.action_loading, R.id.action_error, R.id.action_content, R.id.action_empty,
-            R.id.btn_call, R.id.btn_camera, R.id.btn_all,R.id.btn_request})
+    @OnClick({R.id.action_network_error, R.id.action_loading, R.id.action_error,
+            R.id.action_content, R.id.action_empty,R.id.btn_call, R.id.btn_camera,
+            R.id.btn_all, R.id.btn_request, R.id.btn_action_sheet, R.id.btn_custom_sheet})
     public void click(TextView button) {
         switch (button.getId()) {
             case R.id.action_network_error:
@@ -213,11 +238,17 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
             case R.id.btn_all:
                 sendPermission();
                 break;
+            case R.id.btn_action_sheet:
+                mActionSheetDialog.show();
+                break;
+            case R.id.btn_custom_sheet:
+                mActionSheetDialogCustom.show();
+                break;
             case R.id.btn_request:
                 OkGo.<Weather>get(Urls.TEST_URL).execute(new DialogCallback<Weather>(getActivity()) {
                     @Override
                     public void onSuccess(Response<Weather> response) {
-                        XToast.normal("onSuccess response.code="+response.code());
+                        XToast.normal("onSuccess response.code=" + response.code());
                         XLog.i(" response = " + response.body().toString());
                     }
                 });
