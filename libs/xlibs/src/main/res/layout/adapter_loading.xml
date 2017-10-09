@@ -11,8 +11,8 @@
         android:orientation="horizontal">
 
         <ProgressBar
-            android:id="@+id/adapter_loading_progressbar"
             style="@style/Widget.AppCompat.ProgressBar"
+            android:id="@+id/adapter_loading_progressbar"
             android:layout_width="@dimen/XFrame_progressbar_size"
             android:layout_height="@dimen/XFrame_progressbar_size"
             android:layout_gravity="center_vertical"/>
