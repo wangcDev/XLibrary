@@ -10,7 +10,7 @@
         android:id="@+id/iv_left"
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center" />
 
     <TextView
@@ -23,9 +23,10 @@
     <ImageView
         android:id="@+id/iv_right"
         android:src="@drawable/ic_arrow_right"
+        android:scaleType="center"
         android:layout_width="0dp"
         android:layout_weight="2"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center" />
 
 </LinearLayout>

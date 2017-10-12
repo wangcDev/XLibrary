@@ -3,6 +3,7 @@ package com.laker.xlibs.widget;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
+import android.support.annotation.DrawableRes;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -11,12 +12,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.laker.xlibs.R;
+import com.laker.xlibs.utils.XDateUtils;
+import com.laker.xlibs.utils.XDensityUtils;
+import com.laker.xlibs.utils.log.XLog;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -169,6 +175,9 @@ public class ActionSheetDialog {
             sLayout_content.setLayoutParams(params);
         }
 
+        float scale = context.getResources().getDisplayMetrics().density;
+        int height = (int) (45 * scale + 0.5f);
+
         if (isCustomView){
             // 循环添加条目
             for (int i = 0; i < size; i++) {
@@ -178,10 +187,14 @@ public class ActionSheetDialog {
                 String strItem = sheetItem.name;
 
                 if (sheetItem.itemClickListener != null) {
-                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+                    listener = sheetItem.itemClickListener;
                 }
-
-                actionSheetItem.findViewById(R.id.iv_right).setOnClickListener(new OnClickListener() {
+                ImageView iv_right = (ImageView) actionSheetItem.findViewById(R.id.iv_right);
+                if (sheetItem.imgRes != 0){
+                    iv_right.setImageResource(sheetItem.imgRes);
+                }
+                iv_right.setLayoutParams(new LayoutParams(XDensityUtils.getScreenWidth()/5, height));
+                iv_right.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (listenerRight != null) {
@@ -227,10 +240,6 @@ public class ActionSheetDialog {
                 } else {
                     textView.setTextColor(sheetItem.color);
                 }
-
-                // 高度
-                float scale = context.getResources().getDisplayMetrics().density;
-                int height = (int) (45 * scale + 0.5f);
                 actionSheetItem.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
 
                 // 点击事件
@@ -254,7 +263,7 @@ public class ActionSheetDialog {
                 String strItem = sheetItem.name;
 
                 if (sheetItem.itemClickListener != null) {
-                    listener = (OnSheetItemClickListener) sheetItem.itemClickListener;
+                    listener = sheetItem.itemClickListener;
                 }
 
                 TextView textView = new TextView(context);
@@ -294,9 +303,6 @@ public class ActionSheetDialog {
                     textView.setTextColor(sheetItem.color);
                 }
 
-                // 高度
-                float scale = context.getResources().getDisplayMetrics().density;
-                int height = (int) (45 * scale + 0.5f);
                 textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
 
                 // 点击事件
@@ -497,23 +503,28 @@ public class ActionSheetDialog {
     public static class SheetItem {
         public String name;
         public int id;
+        public @DrawableRes int imgRes;
         OnSheetItemClickListener itemClickListener;
         int color;
 
         public SheetItem(String name) {
-            this.name = name;
-            this.color = 0;
-            this.id = 0;
+            this(name,0);
+
         }
-        public SheetItem(String name,int id) {
+        public SheetItem(String name, int id) {
+            this(name,id,0);
+        }
+        public SheetItem(String name,int id, @DrawableRes int imgRes) {
+            this(name,id,imgRes,0);
+        }
+        public SheetItem(String name,int id,int imgRes,int color) {
             this.name = name;
-            this.color = 0;
             this.id = id;
+            this.imgRes = imgRes;
+            this.color = color;
         }
 
-        public SheetItem(String name, int color, OnSheetItemClickListener itemClickListener) {
-            this.name = name;
-            this.color = color;
+        public void setItemClickListener(OnSheetItemClickListener itemClickListener) {
             this.itemClickListener = itemClickListener;
         }
     }

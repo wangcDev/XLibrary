@@ -87,30 +87,30 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     @Override
     public void initData(Bundle savedInstanceState) {
         tv_content.setText("this is fragment 1 ");
-        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相机", 0));
-        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册", 1));
-        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册2", 2));
-        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册3", 3));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相机", 0, R.mipmap.ic_launcher));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册", 1, R.mipmap.ic_launcher));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册2", 2, R.mipmap.ic_launcher));
+        dataListSheetItem.add(new ActionSheetDialog.SheetItem("相册3", 3, R.mipmap.ic_launcher));
         mActionSheetDialog = new ActionSheetDialog(getActivity());
-        mActionSheetDialogCustom = new ActionSheetDialog(getActivity(),true);
+        mActionSheetDialogCustom = new ActionSheetDialog(getActivity(), true);
         mActionSheetDialog.builder().addSheetItems(dataListSheetItem).OnSheetItemClickListener(
                 new ActionSheetDialog.OnSheetItemClickListener() {
-            @Override
-            public void onClick(int which) {
-                XToast.normal(dataListSheetItem.get(which).name);
-            }
-        });
+                    @Override
+                    public void onClick(int which) {
+                        XToast.normal(dataListSheetItem.get(which).name);
+                    }
+                });
         mActionSheetDialogCustom.builder().addSheetItems(dataListSheetItem).OnSheetItemClickListener(
                 new ActionSheetDialog.OnSheetItemClickListener() {
-            @Override
-            public void onClick(int which) {
-                XToast.normal(dataListSheetItem.get(which).name);
+                    @Override
+                    public void onClick(int which) {
+                        XToast.normal(dataListSheetItem.get(which).name);
 
-            }
-        }).OnSheetItemRightClickListener(new ActionSheetDialog.OnSheetItemRightClickListener() {
+                    }
+                }).OnSheetItemRightClickListener(new ActionSheetDialog.OnSheetItemRightClickListener() {
             @Override
             public void onClick(int which) {
-                XToast.normal("right "+dataListSheetItem.get(which).name);
+                XToast.normal("right " + dataListSheetItem.get(which).name);
             }
         });
         for (int i = 0; i < paths.length; i++) {
@@ -209,7 +209,7 @@ public class MainFragment1 extends BaseFragment implements OnBannerListener, Swi
     }
 
     @OnClick({R.id.action_network_error, R.id.action_loading, R.id.action_error,
-            R.id.action_content, R.id.action_empty,R.id.btn_call, R.id.btn_camera,
+            R.id.action_content, R.id.action_empty, R.id.btn_call, R.id.btn_camera,
             R.id.btn_all, R.id.btn_request, R.id.btn_action_sheet, R.id.btn_custom_sheet})
     public void click(TextView button) {
         switch (button.getId()) {
