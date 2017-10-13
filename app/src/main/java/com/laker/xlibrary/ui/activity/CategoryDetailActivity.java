@@ -54,7 +54,7 @@ public class CategoryDetailActivity extends BaseActivity implements OnFilterDone
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_2;
+        return R.layout.activity_category;
     }
 
     @Override

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="84dp"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="@dimen/common_margin_middle">
+
+    <ImageView
+        android:id="@+id/iv_user_pic"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/iv_user_pic"
+        android:layout_marginLeft="@dimen/common_margin_min"
+        android:layout_toRightOf="@id/iv_user_pic"
+        tools:text="store name" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="@dimen/common_margin_min"
+        android:layout_marginRight="@dimen/common_margin"
+        android:text="2km" />
+
+    <TextView
+        android:id="@+id/tv_product_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_user_name"
+        android:layout_centerVertical="true"
+        tools:text="store label" />
+
+    <RatingBar
+        android:id="@+id/rb_store_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:isIndicator="true"
+        android:layout_alignTop="@id/tv_product_des"
+        android:layout_toRightOf="@id/tv_product_des"
+        android:layout_marginLeft="@dimen/common_margin_min"
+        android:numStars="5"
+        android:rating="4"
+        android:stepSize="1"
+        tools:text="store label" />
+
+
+    <TextView
+        android:id="@+id/tv_send"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/tv_user_name"
+        android:layout_alignParentBottom="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="支持配送"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_paper"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_send"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_margin_min"
+        android:layout_toRightOf="@id/tv_send"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="配纸巾"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/iv_back_money"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_paper"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/common_margin_min"
+        android:layout_toRightOf="@id/tv_paper"
+        android:gravity="center"
+        android:padding="2dp"
+        android:text="返利5%" />
+
+    <TextView
+        android:id="@+id/tv_sale_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/common_margin"
+        android:text="月售328" />
+
+</RelativeLayout>
