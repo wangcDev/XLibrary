@@ -29,6 +29,7 @@ dependencies {
     compile project(':libs:pay')
     compile project(':libs:dropDownMenu')
     compile project(':libs:expandpoptab')
+    compile project(':libs:SwipeMenuRecyclerView')
     compile rootProject.ext.dependencies["multidex"]
     compile rootProject.ext.dependencies["appcompat-v7"]
     compile rootProject.ext.dependencies["constraint-layout"]
