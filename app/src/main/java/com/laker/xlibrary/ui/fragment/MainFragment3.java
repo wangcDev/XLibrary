@@ -9,6 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.aitsuki.swipe.SwipeItemLayout;
+import com.aitsuki.swipe.SwipeMenuRecyclerView;
 import com.laker.xlibrary.R;
 import com.laker.xlibrary.base.BaseFragment;
 import com.laker.xlibrary.model.StoreBean;
@@ -28,13 +29,13 @@ public class MainFragment3 extends BaseFragment {
     @Bind(R.id.tv_content)
     TextView tv_content;
     @Bind(R.id.rv_list)
-    RecyclerView rv_list;
+    SwipeMenuRecyclerView rv_list;
     XRecyclerViewAdapter<StoreBean> xRecyclerViewAdapter;
     List<StoreBean> dataList = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_2;
+        return R.layout.fragment_3;
     }
 
     @Override
@@ -45,11 +46,7 @@ public class MainFragment3 extends BaseFragment {
             @Override
             protected void bindData(XViewHolder xViewHolder, StoreBean s,final int i) {
                 xViewHolder.setText(R.id.tv_content, s.getStoreName());
-//                xViewHolder.setText(R.id.tv_product_des, s.getStoreLabel());
-//                ((RatingBar)xViewHolder.getView(R.id.rb_store_rating)).setRating(s.getStoreRate());
-
                 SwipeItemLayout swipeItemLayout = xViewHolder.getView(R.id.swipe_layout);
-
                 swipeItemLayout.setSwipeEnable(true);
                 xViewHolder.getView(R.id.right_menu).setOnClickListener(new View.OnClickListener() {
                     @Override
